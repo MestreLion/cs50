@@ -13,11 +13,20 @@ int main(void)
     }
     while (!(height >= 1 && height <= 8));
 
-    for (int h = height; h; h--)
+    // height x height nested loops so it always print a square
+    for (int h = 0; h < height; h++)
     {
-        // using printf()'s "Field width" (left-padding with spaces) to avoid a loop
-        printf("%*c", h, '#');
-        for (int i = 0; i < (height - h); i++, printf("%c", '#'));
+        // begin printing spaces
+        int c = ' ';
+        for (int i = 0; i < height; i++)
+        {
+            // after height - h spaces, switch to '#'
+            if (i == (height - h - 1))
+            {
+                c = '#';
+            }
+            printf("%c", c);
+        }
         printf("\n");
     }
 }
