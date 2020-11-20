@@ -23,7 +23,9 @@ style:
 	style50 $(target).c
 
 submit:
+	git commit -a
 	submit50 $(slug)
+	git push
 
 verify: check style
 
