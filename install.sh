@@ -141,4 +141,7 @@ apt_install libcs50 astyle
 message "Installing CS50 CLI tools"
 pip_install {check,style,submit}50
 
+message "Configuring SSH so check50 and submit50 do not ask for Github password"
+ssh -T -p443 git@ssh.github.com
+
 message "Done!"
