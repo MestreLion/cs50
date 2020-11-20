@@ -35,8 +35,16 @@ message() { green "* $@"; }
 
 #------------------------------------------------------------------------------
 
-is_root() { [[ "$(id -u)" -eq 0 ]]; }
-require_root() { is_root || fatal "You must run this as root"; }
+package_installed() {
+	dpkg-query --showformat='${Version}' --show "$1" &>/dev/null
+}
+
+pip_install() {
+	for pak in "$@"; do
+		#if pip3 show "$pak" &>/dev/null; then continue; fi
+		pip3 install --user "$pak"
+	done
+}
 
 
 detect_os () {
@@ -82,24 +90,28 @@ detect_os () {
 	fi
 }
 
-message "Add Harvard's CS50 apt repo and install CS50 C library <libcs50.h>"
+message "Add Harvard's CS50 apt repo and install CS50 C library and CLI tools"
 
-require_root
-detect_os
+if ! package_installed libcs50; then
+	detect_os
 
-apt_config_url+="&os=${os}&dist=${dist}"
-message "Repository URL: $apt_config_url"
+	apt_config_url+="&os=${os}&dist=${dist}"
+	message "Repository URL: $apt_config_url"
 
-# create an apt config file for this repository
-message "Installing $apt_source_path"
-curl -sSf "${apt_config_url}" | tee "$apt_source_path" >/dev/null
+	# create an apt config file for this repository
+	message "Installing $apt_source_path"
+	curl -sSf "${apt_config_url}" | sudo tee "$apt_source_path" > /dev/null
 
-# import the gpg key
-message "Importing packagecloud gpg key"
-curl -L "${gpg_key_url}" | apt-key add -
+	# import the gpg key
+	message "Importing packagecloud gpg key"
+	curl -L "${gpg_key_url}" | sudo apt-key add -
 
-message "Updating apt package list"
-apt update
+	message "Updating apt package list"
+	sudo apt update
 
-message "Installing CS50 C library"
-apt install -y libcs50
+	message "Installing CS50 C library"
+	sudo apt install -y libcs50
+fi
+
+message "Installing CS50 CLI tools"
+pip_install {check,style,submit}50
