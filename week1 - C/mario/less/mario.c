@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <cs50.h>
 
-// print c character n times
+// Print character c n times
 void printcn(char c, int n)
 {
     for (int i = 0; i < n; i++)
@@ -22,7 +22,7 @@ int main(void)
         // ask for input
         height = get_int("Height: ");
     }
-    // re-prompt if not between 1 and 8 (inclusive)
+    // Re-ask if not between 1 and 8 (inclusive)
     while (!(height >= 1 && height <= 8));
 
     for (int line = 1; line <= height; line++)
