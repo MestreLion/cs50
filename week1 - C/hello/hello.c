@@ -3,6 +3,13 @@
 
 int main(void)
 {
-    string name = get_string("What is your name?\n");
-    printf("hello, %s!\n", name);
+    string name = "";
+    // checking for empty name is not stricly needed
+    do
+    {
+        name = get_string("What is your name? ");
+    }
+    while (name[0] == '\0');
+
+    printf("Hello, %s!\n", name);
 }
