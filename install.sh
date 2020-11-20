@@ -20,6 +20,7 @@ apt_source_path="/etc/apt/sources.list.d/cs50.list"
 
 os=
 dist=
+update=0
 
 #------------------------------------------------------------------------------
 
@@ -39,9 +40,23 @@ package_installed() {
 	dpkg-query --showformat='${Version}' --show "$1" &>/dev/null
 }
 
+apt_install() {
+	# Install all non-existing packages in a single command
+	# Usage: package_install [PACKAGE...]
+	local pkg=
+	local pkgs=()
+	for pkg in "$@"; do
+		if ! package_installed "$pkg"; then pkgs+=( "$pkg" ); fi
+	done
+	if (("${#pkgs[@]}")); then
+		sudo apt install -y "${pkgs[@]}"
+	fi
+}
+
 pip_install() {
+	local pak=
 	for pak in "$@"; do
-		#if pip3 show "$pak" &>/dev/null; then continue; fi
+		if pip3 show "$pak" &>/dev/null; then continue; fi
 		pip3 install --user "$pak"
 	done
 }
@@ -106,12 +121,24 @@ if ! package_installed libcs50; then
 	message "Importing packagecloud gpg key"
 	curl -L "${gpg_key_url}" | sudo apt-key add -
 
+	update=1
+fi
+
+if ! package_installed astyle; then
+	message "Adding CS50 PPA Repository"
+	sudo add-apt-repository ppa:cs50/ppa
+	update=0  # add-apt-repository does apt update
+fi
+
+if ((update)); then
 	message "Updating apt package list"
 	sudo apt update
-
-	message "Installing CS50 C library"
-	sudo apt install -y libcs50
 fi
+
+message "Installing CS50 C library and CLI dependencies"
+apt_install libcs50 astyle
 
 message "Installing CS50 CLI tools"
 pip_install {check,style,submit}50
+
+message "Done!"
