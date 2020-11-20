@@ -1,11 +1,31 @@
+target=mario
+slug=cs50/problems/2020/x/mario/less
+
+# ------------------------------------
+
 LDLIBS=-lcs50
 
-default: clean mario exec
+default: clean $(target) run
 
-exec:
-	./mario
+run:
+	./$(target)
 
 clean:
-	rm -rf mario
+	rm -rf $(target)
 
-.PHONY: clean exec
+check:
+	check50 --local $(slug)
+
+style:
+	style50 $(target).c
+
+submit:
+	submit50 $(slug)
+
+verify: check style
+
+cs50: verify submit
+
+all: default cs50
+
+.PHONY: default run clean check style submit verify cs50 all
