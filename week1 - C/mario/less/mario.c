@@ -15,8 +15,9 @@ int main(void)
 
     for (int h = height; h; h--)
     {
-        for (int i = 0; i < (h - 1); i++, printf("%c", ' '));
-        for (int i = 0; i < (height - h + 1); i++, printf("%c", '#'));
+        // using printf()'s "Field width" (left-padding with spaces) to avoid a loop
+        printf("%*c", h, '#');
+        for (int i = 0; i < (height - h); i++, printf("%c", '#'));
         printf("\n");
     }
 }
