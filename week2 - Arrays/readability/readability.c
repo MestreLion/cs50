@@ -65,10 +65,6 @@ int main(void)
     // Account for the last word on last sentence (i.e., the last word on text)
     words++;
 
-    fprintf(stderr, "%4i letters\n",   letters);
-    fprintf(stderr, "%4i words\n",     words);
-    fprintf(stderr, "%4i sentences\n", sentences);
-
     int idx = round(coleman_liau(letters, words, sentences));
 
     if (idx < 1)
