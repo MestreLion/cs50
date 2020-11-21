@@ -23,7 +23,7 @@ style:
 	style50 $(target).c
 
 submit:
-	if [ -n "$(git status --porcelain)" ]; then git commit -a; fi
+	if [ -n '$(shell git status --porcelain)' ]; then git commit -a; fi
 	git push
 	submit50 $(slug)
 
