@@ -32,7 +32,19 @@ int main(void)
 		cc /= 10;
 	}
 
-	if (length > 16)
+	if (length == 15 && d1 == 3 && (d2 == 4 || d2 == 7))
+	{
+		printf("AMEX\n");
+	}
+	else if (length == 16 && d1 == 5 && (d2 >= 1 && d2 <= 5))
+	{
+		printf("MASTERCARD\n");
+	}
+	else if ((length == 16 || length == 13) && d1 == 4)
+	{
+		printf("VISA\n");
+	}
+	else
 	{
 		printf("INVALID\n");
 	}
