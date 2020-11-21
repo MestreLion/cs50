@@ -1,5 +1,7 @@
+# https://cs50.harvard.edu/x/2020/psets/3/plurality
+
 target=plurality
-slug=cs50/problems/2020/x/plurality
+slug=cs50/problems/2020/x/$(target)
 
 # ------------------------------------
 
@@ -9,6 +11,9 @@ CFLAGS=-Wall -Wextra -std=c11 -Og
 # ------------------------------------
 
 default: clean $(target) run
+
+$(target).c:
+	wget 'https://cdn.cs50.net/2019/fall/psets/3/plurality/plurality.c'
 
 run:
 	./$(target) $(args)
