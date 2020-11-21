@@ -14,10 +14,33 @@ int main(void)
     // Length of CC number
     int length = 0;
 
-    while(cc)
+    // Sum of digits
+    int sum = 0;
+
+    while (cc)
     {
         // Get last digit
         int d = cc % 10;
+
+        // Add digit to sum, doubled if on odd position (from right to left)
+        // Using current (not yet updated) length as position index
+        if (length % 2)
+        {
+            sum += 2 * d;
+
+            // Fix the case 2d >= 10, when *digits* should have been added instead
+            // So 10 => 1+0 = 1; 12 => 1+2 = 3, 14 => 1+4 = 5, and so on...
+            // In all such cases, the difference to fix is always 9
+            // (and I bet this is not a coincidence!)
+            if (d >= 5)
+            {
+                sum -= 9;
+            }
+        }
+        else
+        {
+            sum += d;
+        }
 
         // Update first digits and length
         d2 = d1;
@@ -29,7 +52,14 @@ int main(void)
         cc /= 10;
     }
 
-    if (length == 15 && d1 == 3 && (d2 == 4 || d2 == 7))
+    // Check the sum
+    if (sum % 10)
+    {
+        printf("INVALID\n");
+    }
+
+    // Check card issuers
+    else if (length == 15 && d1 == 3 && (d2 == 4 || d2 == 7))
     {
         printf("AMEX\n");
     }
@@ -41,6 +71,7 @@ int main(void)
     {
         printf("VISA\n");
     }
+
     else
     {
         printf("INVALID\n");
