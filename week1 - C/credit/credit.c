@@ -31,13 +31,9 @@ int main(void)
 		cc -= d;
 		cc /= 10;
 	}
-	fprintf(stderr, "Length: %i\n", length);
-	fprintf(stderr, "First digits: %i%i\n", d1, d2);
 
 	if (length > 16)
 	{
-		fprintf(stderr, "Length > 16: %i\n", length);
 		printf("INVALID\n");
-		return 1;
 	}
 }
