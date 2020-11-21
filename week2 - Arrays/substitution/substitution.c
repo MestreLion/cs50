@@ -6,6 +6,7 @@
 
 // Return the base letter of the "character set" of c: either lowercase 'a',
 // uppercase 'A' or '\0' (== 0) if c is not a letter.
+// Used to both check if c is a letter and to preserve its case.
 char base_letter(char c)
 {
     if (c >= 'A' && c <= 'Z')
@@ -31,13 +32,23 @@ bool check_key(string k)
             fprintf(stderr, "Key must only contain alphabetic characters.\n");
             return false;
         }
-        if (false)
+        // From second character onwards, check for duplicated characters.
+        // Do so by going backwards in key from current position.
+        // Compare characters in a case insensitive way.
+        if (i)
         {
-            fprintf(stderr, "Key must not contain repeated characters.\n");
-            return false;
+            int j = i - 1;
+            for (char d = k[j]; j >= 0; d = k[--j])
+            {
+                if ((c - b) == (d - base_letter(d)))
+                {
+                    fprintf(stderr, "Key must not contain repeated characters.\n");
+                    return false;
+                }
+            }
         }
     }
-    if (i != 26)
+    if (i != 26 || k[26])
     {
         fprintf(stderr, "Key must contain 26 characters.\n");
         return false;
@@ -68,7 +79,7 @@ int main(int argc, string argv[])
 {
     if (argc != 2)
     {
-        printf("Usage: ./substitution KEY\n");
+        fprintf(stderr, "Usage: ./substitution KEY\n");
         return 1;
     }
 
