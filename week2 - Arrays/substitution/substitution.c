@@ -54,8 +54,9 @@ void print_cipher(string s, string key)
         char b = base_letter(c);
         if (b)
         {
-            // "Map it"
-            // c = ...
+            // Map it
+            char k = key[c - b];
+            c = k - base_letter(k) + b;
         }
         // else: c is not a letter, just print it unmodified
         printf("%c", c);
