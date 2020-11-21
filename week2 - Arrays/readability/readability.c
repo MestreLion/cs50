@@ -70,5 +70,17 @@ int main(void)
     fprintf(stderr, "%4i sentences\n", sentences);
 
     int idx = round(coleman_liau(letters, words, sentences));
-    printf("Grade %i\n", idx);
+
+    if (idx < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else if (idx >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else
+    {
+        printf("Grade %i\n", idx);
+    }
 }
