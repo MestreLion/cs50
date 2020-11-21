@@ -1,8 +1,5 @@
 // https://cs50.harvard.edu/x/2020/psets/2/substitution
 
-// TODO: create a "normalized" copy of key to avoid calling base_letter()
-// over and over for the same characters
-
 #include <stdio.h>
 #include <cs50.h>
 
@@ -25,7 +22,8 @@ char base_letter(char c)
 }
 
 
-bool check_key(string k)
+// Perform key checking and in-place normalization to upper case
+bool normalize_key(string k)
 {
     int i = 0;
     for (char c = k[i]; c && i < 26; c = k[++i])
@@ -36,21 +34,27 @@ bool check_key(string k)
             fprintf(stderr, "Key must only contain alphabetic characters.\n");
             return false;
         }
+
+        // normalize c to upper case
+        char n = c - b + 'A';
+
         // From second character onwards, check for duplicated characters.
         // Do so by going backwards in key from current position.
-        // Compare characters in a case insensitive way.
         if (i)
         {
             int j = i - 1;
             for (char d = k[j]; j >= 0; d = k[--j])
             {
-                if ((c - b) == (d - base_letter(d)))
+                if (n == d)
                 {
                     fprintf(stderr, "Key must not contain repeated characters.\n");
                     return false;
                 }
             }
         }
+
+        // save the normalized n in key
+        k[i] = n;
     }
     if (i != 26 || k[26])
     {
@@ -61,7 +65,6 @@ bool check_key(string k)
 }
 
 
-// Assumes a valid key
 void print_cipher(string s, string key)
 {
     for (char c = *s; c; c = *(++s))
@@ -71,7 +74,7 @@ void print_cipher(string s, string key)
         {
             // Map it
             char k = key[c - b];
-            c = k - base_letter(k) + b;
+            c = k - 'A' + b;
         }
         // else: c is not a letter, just print it unmodified
         printf("%c", c);
@@ -89,11 +92,12 @@ int main(int argc, string argv[])
 
     string key = argv[1];
 
-    if (!(check_key(key)))
+    if (!(normalize_key(key)))
     {
-        // Error message was already printed by check_key()
+        // Error message was already printed by normalize_key()
         return 1;
     }
+    printf("key: %s\n", key);
 
     string text = get_string("plaintext : ");
     printf("ciphertext: ");
