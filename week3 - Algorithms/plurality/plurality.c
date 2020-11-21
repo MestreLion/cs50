@@ -82,7 +82,7 @@ void print_winner(void)
 {
     int max_votes = 0;
 
-    // First pass: find the (or a) most voted candidate
+    // First pass: find the votes of the (or a) most voted candidate
     for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes > max_votes)
