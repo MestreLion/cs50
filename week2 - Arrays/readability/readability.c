@@ -30,11 +30,12 @@ bool is_word(char c)
     return (c == ' ');
 }
 
-int coleman_liau(int l, int w, int s)
+// Rounding is performed by caller, so the "raw" index is available if needed
+float coleman_liau(int l, int w, int s)
 {
     float L = 100.0 * l / w;
     float S = 100.0 * s / w;
-    return round(0.0588 * L - 0.296 * S - 15.8);
+    return 0.0588 * L - 0.296 * S - 15.8;
 }
 
 
@@ -68,6 +69,6 @@ int main(void)
     fprintf(stderr, "%4i words\n",     words);
     fprintf(stderr, "%4i sentences\n", sentences);
 
-    int idx = coleman_liau(letters, words, sentences);
-    printf("%i\n", idx);
+    int idx = round(coleman_liau(letters, words, sentences));
+    printf("Grade %i\n", idx);
 }
