@@ -1,5 +1,13 @@
 // https://cs50.harvard.edu/x/2020/psets/2/readability
 
+/*
+ * Some assumptions on text input:
+ * - It is trimmed: no leading or trailing whitespace.
+ * - Word and sentence boundaries are single characters, not multiple runs.
+ *   (i.e., there are no empty words "  " or sentences "..")
+ * - Proper syntax: space between sentences and ends with a sentence terminator.
+ */
+
 #include <math.h>
 #include <stdio.h>
 #include <cs50.h>
@@ -10,11 +18,13 @@ bool is_letter(char c)
     return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
 
+// Actually "is_sentence_terminator()"
 bool is_sentence(char c)
 {
     return (c == '.' || c == '?' || c == '!');
 }
 
+// Actually "is_word_terminator()"
 bool is_word(char c)
 {
     return (c == ' ');
@@ -43,12 +53,15 @@ int main(void)
         {
             words++;
         }
+        // Intentionally disregards sentence terminators as word terminators.
+        // Since it is assumed there is a space between all sentences,
+        // the last the word of the previous sentence will be accounted for.
         else if (is_sentence(c))
         {
             sentences++;
         }
     }
-    // Count the last word on text, as it does not have a trailing space
+    // Account for the last word on last sentence (i.e., the last word on text)
     words++;
 
     fprintf(stderr, "%4i letters\n",   letters);
