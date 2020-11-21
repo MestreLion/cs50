@@ -25,7 +25,7 @@ style:
 submit:
 	if [ -n '$(shell git status --porcelain)' ]; then git commit -a; fi
 	git push
-	submit50 $(slug)
+	echo yes | submit50 $(slug)
 
 verify: check style
 
