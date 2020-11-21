@@ -20,6 +20,23 @@ char base_letter(char c)
     return '\0';
 }
 
+void print_caesar(string s, int key)
+{
+    // The ugly hacks we do to avoid strlen() and extra vars...
+    for (char c = *s; c; c = *(++s))
+    {
+        char b = base_letter(c);
+        if (b)
+        {
+            // Rotate it
+            c = (((c - b) + key) % 26) + b;
+        }
+        // else: c is not a letter, just print it unmodified
+        printf("%c", c);
+    }
+    printf("\n");
+}
+
 
 int main(int argc, string argv[])
 {
@@ -32,19 +49,6 @@ int main(int argc, string argv[])
     }
 
     string text = get_string("plaintext : ");
-
     printf("ciphertext: ");
-    // The ugly hacks we do to avoid <string.h>'s strlen()...
-    for (int i = 0, c = text[0]; c != '\0'; c = text[++i])
-    {
-        char b = base_letter(c);
-        if (b)
-        {
-            // Rotate it
-            c = ((c - b + key) % 26) + b;
-        }
-        // else: c is not a letter, just print it unmodified
-        printf("%c", c);
-    }
-    printf("\n");
+    print_caesar(text, key);
 }
