@@ -1,7 +1,11 @@
 // https://cs50.harvard.edu/x/2020/psets/2/substitution
 
+// TODO: create a "normalized" copy of key to avoid calling base_letter()
+// over and over for the same characters
+
 #include <stdio.h>
 #include <cs50.h>
+
 
 
 // Return the base letter of the "character set" of c: either lowercase 'a',
