@@ -23,9 +23,9 @@ style:
 	style50 $(target).c
 
 submit:
-	git commit -a
-	submit50 $(slug)
+	if ! [ -z "$(git status --porcelain)" ]; then git commit -a; fi
 	git push
+	submit50 $(slug)
 
 verify: check style
 

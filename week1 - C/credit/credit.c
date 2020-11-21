@@ -14,13 +14,10 @@ int main(void)
     // Length of CC number
     int length = 0;
 
-    // Current last digit
-    int d;
-
-    while (cc)
+    while(cc)
     {
         // Get last digit
-        d = cc % 10;
+        int d = cc % 10;
 
         // Update first digits and length
         d2 = d1;
