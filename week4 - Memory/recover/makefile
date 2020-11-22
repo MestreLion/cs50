@@ -19,7 +19,7 @@ slug=cs50/problems/2020/x/$(path)
 
 # ------------------------------------
 
-default: run
+default: clean run
 
 $(target).c:
 	wget 'https://cdn.cs50.net/2019/fall/psets/$(pset)/$(path)/$(target).zip'
@@ -32,7 +32,7 @@ run: $(target)
 	./$(target) $(args)
 
 clean:
-	rm -rf $(target)
+	rm -rf $(target) *.jpg
 
 purge:
 	mv makefile .makefile
