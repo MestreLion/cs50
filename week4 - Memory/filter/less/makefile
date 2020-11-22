@@ -41,6 +41,19 @@ purge: clean
 	rm -rf *
 	mv .makefile makefile
 
+images: $(target)
+	mkdir -p output
+	for i in images/*.bmp; do \
+		ln -s -- ../"$$i" output/"$$(basename "$${i%.*}")"._.bmp; \
+	done
+	for f in grayscale sepia reflect blur; do \
+		for i in images/*.bmp; do \
+			./$(target) -$$(printf %.1s "$$f") "$$i" \
+				output/"$$(basename "$${i%.*}")".$${f}.bmp; \
+		done; \
+		sleep 1; \
+	done
+
 check:
 	check50 --local $(slug)
 
