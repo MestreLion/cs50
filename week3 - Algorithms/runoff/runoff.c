@@ -1,5 +1,6 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <string.h>
 
 // Max voters and candidates
 #define MAX_VOTERS 100
@@ -153,7 +154,7 @@ void tabulate(void)
         // Loop the votes in ranks (for each rank there is a candidate)
         for (int j = 0; j < candidate_count; j++)
         {
-            candidate c = preferences[i][j];
+            candidate c = candidates[preferences[i][j]];
             if (!c.eliminated)
             {
                 c.votes++;
