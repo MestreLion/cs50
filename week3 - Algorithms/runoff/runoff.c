@@ -158,6 +158,7 @@ void tabulate(void)
             if (!c.eliminated)
             {
                 c.votes++;
+                break;
             }
         }
     }
