@@ -167,9 +167,9 @@ void tabulate(void)
 // Print the winner of the election, if there is one
 bool print_winner(void)
 {
-    // Determine the required votes to win: ceil(voter_count/2)
+    // Determine the required votes to win: floor(voter_count/2) + 1
     // This should be a global, as it never changes once voter_count is set
-    int win_votes = (int)((voter_count / 2.0) + 0.5);
+    int win_votes = (voter_count / 2.0) + 1;
 
     // Find a candidate with at least as many votes, if any
     for (int i = 0; i < candidate_count; i++)
