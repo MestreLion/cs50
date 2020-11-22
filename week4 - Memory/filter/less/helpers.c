@@ -59,8 +59,53 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
     }
 }
 
+
+typedef struct
+{
+    int red;
+    int blue;
+    int green;
+    int count;
+}
+BLURPIXEL;
+
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    return;
+    // Ouch! Stack overflow anyone?
+    RGBTRIPLE new[height][width];
+
+    // Loop every pixel to determine its new color
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            // Get the sum of the pixels in the (max) 3x3 box around (x,y)
+            BLURPIXEL p = {0};
+            for (int i = (y ? (y - 1) : 0); i <= ((y < (height - 1)) ? (y + 1) : y); i++)
+            {
+                for (int j = (x ? (x - 1) : 0); j <= ((x < (width - 1)) ? (x + 1) : x); j++)
+                {
+                    p.red   += image[i][j].rgbtRed;
+                    p.green += image[i][j].rgbtGreen;
+                    p.blue  += image[i][j].rgbtBlue;
+                    p.count++;
+                }
+            }
+            // Average the pixels and write to buffer
+            new[y][x].rgbtRed   = round(1.0 * p.red   / p.count);
+            new[y][x].rgbtGreen = round(1.0 * p.green / p.count);
+            new[y][x].rgbtBlue  = round(1.0 * p.blue  / p.count);
+        }
+    }
+
+    // Write the new values to the original image
+    // Who needs memcpy(image, new, height * width * sizeof(RGBTRIPLE)) anyway?
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            image[y][x] = new[y][x];
+        }
+    }
 }
