@@ -44,7 +44,7 @@ purge: clean
 images: $(target)
 	mkdir -p output
 	for i in images/*.bmp; do \
-		ln -s -- ../"$$i" output/"$$(basename "$${i%.*}")"._.bmp; \
+		ln -sf -- ../"$$i" output/"$$(basename "$${i%.*}")"._.bmp; \
 	done
 	for f in grayscale sepia reflect blur; do \
 		for i in images/*.bmp; do \
