@@ -154,10 +154,10 @@ void tabulate(void)
         // Loop the votes in ranks (for each rank there is a candidate)
         for (int j = 0; j < candidate_count; j++)
         {
-            candidate c = candidates[preferences[i][j]];
-            if (!c.eliminated)
+            candidate *c = &candidates[preferences[i][j]];
+            if (!c->eliminated)
             {
-                c.votes++;
+                c->votes++;
                 break;
             }
         }
