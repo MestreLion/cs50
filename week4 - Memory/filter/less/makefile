@@ -45,7 +45,7 @@ check:
 	check50 --local $(slug)
 
 style:
-	style50 $(target).c
+	style50 *.c
 
 submit:
 	if [ -n '$(shell git status --porcelain)' ]; then git commit -a; fi
