@@ -18,9 +18,9 @@ slug=cs50/problems/2020/x/$(path)
 
 # ------------------------------------
 
-default: clean $(target) run
+default: run
 
-$(target): $(target).c
+$(target): clean *.c
 	$(MAKE) -f Makefile $@
 
 $(target).c:
@@ -30,7 +30,7 @@ $(target).c:
 	rmdir $(target)
 	rm $(target).zip
 
-run:
+run: $(target)
 	./$(target) $(args)
 
 clean:
@@ -41,7 +41,7 @@ purge: clean
 	rm -rf *
 	mv .makefile makefile
 
-images: $(target)
+images: clean $(target)
 	mkdir -p output
 	for i in images/*.bmp; do \
 		ln -sf -- ../"$$i" output/"$$(basename "$${i%.*}")"._.bmp; \
@@ -71,4 +71,4 @@ cs50: verify submit
 
 all: default cs50
 
-.PHONY: default run clean purge check style submit verify cs50 all
+.PHONY: default run clean purge images check style submit verify cs50 all
