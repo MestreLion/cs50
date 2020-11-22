@@ -127,41 +127,106 @@ int main(int argc, string argv[])
 // Record preference if vote is valid
 bool vote(int voter, int rank, string name)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(candidates[i].name, name) == 0)
+        {
+            preferences[voter][rank] = i;
+            return true;
+        }
+    }
     return false;
 }
 
 // Tabulate votes for non-eliminated candidates
 void tabulate(void)
 {
-    // TODO
+    // Reset candidates votes
+    for (int i = 0; i < candidate_count; i++)
+    {
+        candidates[i].votes = 0;
+    }
+
+    // Loop the voters (in preferences array)
+    for (int i = 0; i < voter_count; i++)
+    {
+        // Loop the votes in ranks (for each rank there is a candidate)
+        for (int j = 0; j < candidate_count; j++)
+        {
+            candidate c = preferences[i][j];
+            if (!c.eliminated)
+            {
+                c.votes++;
+            }
+        }
+    }
     return;
 }
 
 // Print the winner of the election, if there is one
 bool print_winner(void)
 {
-    // TODO
+    // Determine the required votes to win: ceil(voter_count/2)
+    // This should be a global, as it never changes once voter_count is set
+    int win_votes = (int)((voter_count / 2.0) + 0.5);
+
+    // Find a candidate with at least as many votes, if any
+    for (int i = 0; i < candidate_count; i++)
+    {
+        // Checking for eliminated here is redundant: as win_votes is constant,
+        // any candidate that ever achieves it in any stage of the election is
+        // guaranteeded to still be a runner (and winner).
+        // Besides, tabulate() resets votes prior to each stage, so eliminated
+        // candidates will always have 0 votes. But that should be considered
+        // an implementation detail, and as such not to be relied on.
+        // PS: it took more lines (and time) to explain that than to simply add
+        // `&& !candidates[i].eliminated` to the criteria :-P
+        if (candidates[i].votes >= win_votes)
+        {
+            printf("%s\n", candidates[i].name);
+            return true;
+        }
+    }
     return false;
 }
 
 // Return the minimum number of votes any remaining candidate has
 int find_min(void)
 {
-    // TODO
-    return 0;
+    int min_votes = MAX_VOTERS;
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (!candidates[i].eliminated && candidates[i].votes < min_votes)
+        {
+            min_votes = candidates[i].votes;
+        }
+    }
+    return min_votes;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
 bool is_tie(int min)
 {
-    // TODO
-    return false;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (!candidates[i].eliminated && candidates[i].votes > min)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Eliminate the candidate (or candidates) in last place
 void eliminate(int min)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes == min)
+        {
+            candidates[i].eliminated = true;
+        }
+    }
     return;
 }
