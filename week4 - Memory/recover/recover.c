@@ -17,7 +17,7 @@ bool is_jpg(BYTE data[BLOCKSIZE])
     if (data[0] == 0xFF &&
         data[1] == 0xD8 &&
         data[2] == 0xFF &&
-       (data[3] & 0xF0) == 0xE0)
+        (data[3] & 0xF0) == 0xE0)
     {
         return true;
     }
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     char outpath[sizeof("000.jpg")];
     FILE *outfile = NULL;
     BYTE data[BLOCKSIZE];
-    while(fread(data, sizeof(data), 1, infile))
+    while (fread(data, sizeof(data), 1, infile))
     {
         // Check if there is a JPEG in this data block
         if (is_jpg(data))
