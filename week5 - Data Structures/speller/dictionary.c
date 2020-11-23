@@ -2,9 +2,10 @@
 
 #include <errno.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h>    // *printf, fscanf, fopen, fclose, FILE, EOF, stderr
+#include <stdlib.h>   // malloc, free
+#include <string.h>   // strerror, strcpy
+#include <strings.h>  // strncasecmp
 
 #include "dictionary.h"
 
@@ -30,21 +31,39 @@ unsigned int num_words = 0;
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // TODO
-    // hash word to find hash array index
-    // traverse list
-    // stop if find
-    // stop if null
-    // stop if node word > searched word, as load() stored words in reverse order
-    //   an amazing optimization
+    // Hash word to find hash table index (bucket)
+    unsigned int index = hash(word) % N;
+
+    // Traverse the list
+    node *cursor = table[index];
+    while (cursor != NULL)
+    {
+        // Compare words
+        int cmp = strncasecmp(word, cursor->word, LENGTH);
+
+        // Check if found
+        if (cmp == 0)
+        {
+            return true;
+        }
+
+        // As load() store words ordered (in reverse), check if past lexical order.
+        if (cmp > 0)
+        {
+            return false;
+        }
+
+        // Move to next node
+        cursor = cursor->next;
+    }
     return false;
 }
 
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // TODO: Optimize + KISS: Sum all chars weighed by position
-    return word[0];
+    // TODO: Optimize + KISS: Sum all chars weighted by position
+    return word[0] - (word[0] >= 'a' ? 'a' : 'A');
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -79,6 +98,8 @@ bool load(const char *dictionary)
             return false;
         }
         // No need for strncpy(), as fscanf() already limited length
+        // and, per man, using it could hurt performance as it would write
+        // up to LENGHT x '\0' on every word.
         strcpy(n->word, word);
 
         // Calculate hash of word to be used as index in hash table
@@ -112,10 +133,26 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
-    // loop the hash array. for each list:
-    //  traverse the list. for each node:
-    //    take note of next node
-    //    free the node
-    return false;
+    // Loop the hash table
+    for (int i = 0; i < N; i++)
+    {
+        // For each node, traverse the list
+        node *cursor = table[i];
+        while (cursor != NULL)
+        {
+            node *n = cursor;
+            cursor = cursor->next;
+
+            // Free memory and update word count
+            free(n);
+            num_words--;
+        }
+    }
+    // Sanity check
+    if (num_words)
+    {
+        fprintf(stderr, "Failed to unload all words in dictionary\n");
+        return false;
+    }
+    return true;
 }
