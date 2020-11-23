@@ -1,13 +1,9 @@
-# https://cs50.harvard.edu/x/2020/psets/4/filter/less
-
-# This is intentionally named 'makefile' instead of 'Makefile', so it is not
-# replaced by CS50's 'Makefile' from distribution code zip, and also take
-# precedence over it when invoked by GNU (and possibly others) make
+# https://cs50.harvard.edu/x/2020/psets/4/recover
 
 pset=4
 target=recover
 version=
-args= *.raw
+args=*.raw
 
 # ------------------------------------
 
