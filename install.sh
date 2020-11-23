@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Add Harvard's CS50 apt repo and install CS50 C library <libcs50.h>
+# Add Harvard's CS50 apt repo and install CS50 C library <libcs50.h> and tools
 
 # https://github.com/cs50/libcs50
 # https://packagecloud.io/install/repositories/cs50/repo/script.deb.sh
@@ -135,8 +135,8 @@ if ((update)); then
 	sudo apt update
 fi
 
-message "Installing CS50 C library and CLI dependencies"
-apt_install libcs50 astyle
+message "Installing CS50 C library and CLI dependencies and tools"
+apt_install libcs50 astyle valgrind
 
 message "Installing CS50 CLI tools"
 pip_install {check,style,submit}50
