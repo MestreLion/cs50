@@ -29,7 +29,7 @@ $(target).c:
 	unzip $(target).zip
 	mv $(target)/* .
 	rmdir $(target)
-	#rm $(target).zip
+	rm $(target).zip
 
 run: $(target)
 	./$(target) $(args)
