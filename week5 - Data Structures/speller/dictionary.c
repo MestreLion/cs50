@@ -20,7 +20,7 @@ node;
 // Number of buckets in hash table
 // Ideally, N = key set size, no collisions given an uniform hash()
 // NOTE: ~143K for dictionaries/large
-const unsigned int N = 2 * 143091;
+const unsigned int N = 256 * 1024;
 
 // Hash table
 node *table[N];
