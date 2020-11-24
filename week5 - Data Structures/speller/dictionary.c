@@ -20,7 +20,7 @@ node;
 // Number of buckets in hash table
 // Ideally, N = key set size, no collisions given an uniform hash()
 // NOTE: ~143K for dictionaries/large
-const unsigned int N = 143091;
+const unsigned int N = 2 * 143091;
 
 // Hash table
 node *table[N];
@@ -59,6 +59,12 @@ bool check(const char *word)
             return true;
         }
 
+        // As load() adds sorted words, check if past lexical order.
+        if (cmp > 0)
+        {
+            return false;
+        }
+
         // Move to next node
         cursor = cursor->next;
     }
@@ -68,13 +74,15 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // Sum all chars weighted by position and a (prime) constant
+    // KISS: Sum all chars weighted by position
     int h = 0;
     int len = strlen(word);
     for (int i = 0; i < len; i++)
     {
-        h += word[i] * (i + 1) * 31;
+        h += word[i] * (i + 1);
     }
+
+    // Usually it's up to the caller to use mod, but for simplicity I put here
     return h % N;
 }
 
