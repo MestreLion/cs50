@@ -76,17 +76,20 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // "Concatenate" the first letters. Yes, there will be collisions, so what?
-    // No strlen() needed, use only fast bit-shift arithmetics
-    int h = 0;
-    for (int i = 0; i < 8 && word[i]; i++)
+    // Using djb2 hash from http://www.cse.yorku.ca/~oz/hash.html
+    // On "magic numbers" 33 and 5381: https://stackoverflow.com/questions/1579721
+    unsigned int h = 5381;
+    int c;
+    while ((c = *word++))
     {
-        h += word[i] << (8 * i);
+        // A faster way of doing h = h * 33 + c
+        h = ((h << 5) + h) + c;
     }
 
     // Usually it's up to the caller to use mod, but for simplicity I put here
     return h % N;
 }
+
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
