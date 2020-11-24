@@ -25,6 +25,9 @@ const unsigned int N = 2 * 143091;
 // Hash table
 node *table[N];
 
+// Node array, to speedup unload()
+node *nodes[MAX_WORDS];
+
 // Word counter, set by load() and read by size()
 unsigned int num_words = 0;
 
@@ -129,8 +132,14 @@ bool load(const char *dictionary)
         n->next = table[index];
         table[index] = n;
 
-        // Update word count, a *huge* optimization for size()!
-        num_words++;
+        // Update word count and node array, optimizing size() and unload()
+        nodes[num_words++] = n;
+        if (num_words > MAX_WORDS)
+        {
+            fprintf(stderr, "Too many words in dictionary '%s', maximum %i.\n",
+                    dictionary, MAX_WORDS);
+            return false;
+        }
     }
     // Check if error when reading file data
     if (ferror(file))
@@ -153,26 +162,10 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // Loop the hash table
-    for (int i = 0; i < N; i++)
+    // Loop the node array, freeing each node
+    while (num_words--)
     {
-        // For each node, traverse the list
-        node *cursor = table[i];
-        while (cursor != NULL)
-        {
-            node *n = cursor;
-            cursor = cursor->next;
-
-            // Free memory and update word count
-            free(n);
-            num_words--;
-        }
-    }
-    // Sanity check
-    if (num_words)
-    {
-        fprintf(stderr, "Failed to unload all words in dictionary\n");
-        return false;
+        free(nodes[num_words]);
     }
     return true;
 }

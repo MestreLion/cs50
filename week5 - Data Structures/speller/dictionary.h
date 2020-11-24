@@ -9,6 +9,9 @@
 // (e.g., pneumonoultramicroscopicsilicovolcanoconiosis)
 #define LENGTH 45
 
+// Maximum words in a dictionary
+#define MAX_WORDS 1048576
+
 // Prototypes
 bool check(const char *word);
 unsigned int hash(const char *word);
