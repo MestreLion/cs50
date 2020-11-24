@@ -16,6 +16,7 @@ CFLAGS=-Wall -Wextra -std=c11 -Og
 
 path=$(patsubst %/,%,$(target)/$(version))
 slug=cs50/problems/2020/x/$(path)
+challenge=$(slug:/$(path)=/challenges/$(path))
 
 # ------------------------------------
 
@@ -43,7 +44,7 @@ purge:
 	mv .makefile makefile
 
 check:
-	check50 $(slug)
+	check50 --local $(slug)
 
 style:
 	style50 *.c
@@ -53,8 +54,9 @@ submit:
 	git push
 	echo yes | submit50 $(slug)
 
-challenge: submit
-	echo yes | submit50 $(slug:/$(path)=/challenges/$(path))
+challenge:
+	check50 --local $(challenge)
+	echo yes | submit50 $(challenge)
 
 verify: check style
 
