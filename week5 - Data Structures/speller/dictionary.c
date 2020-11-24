@@ -21,7 +21,7 @@ node;
 // To avoid mod, set N as large as maximum hash() value, or a close upper bound
 // The higher it is, the slower is unload() (but perhaps neglectably).
 // NOTE: ~143K is enough for no collision, given an uniform hash()
-const unsigned int N = 27 * (LENGTH * LENGTH - LENGTH) / 2;
+const unsigned int N = 1 + 127 * (LENGTH * LENGTH - LENGTH) / 2;
 
 // Hash table
 node *table[N];
@@ -70,16 +70,15 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // KISS: Sum all chars weighted by position
-    // Max value: 26 + sum[n: 1->(LENGTH-1)](27 * n) = 25568
-    // Upper bound: 27 * (LENGTH^2 - LENGTH) / 2 = 26730
-    // Really conservative upper bound: 27 * LENGTH^2 = 54675
+    // Upper bound: 127 * (LENGTH^2 - LENGTH) / 2 = 125730
+    // Really conservative upper bound: 127 * LENGTH^2 = 257175
     int h = 0;
     int len = strlen(word);
     for (int i = 0; i < len; i++)
     {
         h += word[i] * (i + 1);
     }
-    return h % N;
+    return h;
 }
 
 // Loads dictionary into memory, returning true if successful else false
