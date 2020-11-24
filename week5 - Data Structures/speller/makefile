@@ -54,8 +54,7 @@ submit:
 	git push
 	echo yes | submit50 $(slug)
 
-challenge:
-	check50 --local $(challenge)
+challenge: submit
 	echo yes | submit50 $(challenge)
 
 verify: check style
