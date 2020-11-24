@@ -53,9 +53,12 @@ submit:
 	git push
 	echo yes | submit50 $(slug)
 
+challenge: submit
+	echo yes | submit50 $(slug:/$(path)=/challenges/$(path))
+
 verify: check style
 
-cs50: verify submit
+cs50: verify challenge
 
 all: default cs50
 
