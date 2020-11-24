@@ -43,7 +43,7 @@ purge:
 	mv .makefile makefile
 
 check:
-	check50 --local $(slug)
+	check50 $(slug)
 
 style:
 	style50 *.c
