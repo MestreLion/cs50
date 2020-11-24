@@ -112,23 +112,10 @@ bool load(const char *dictionary)
     sprintf(format, "%%%is", LENGTH);
 
     // Loop words in dictionary
-    char word[LENGTH + 1];
-    while (fscanf(file, format, word) != EOF)
+    while (num_words <= MAX_WORDS && fscanf(file, format, nodes[num_words].word) != EOF)
     {
-        if (num_words == MAX_WORDS)
-        {
-            fprintf(stderr, "Too many words in dictionary '%s', maximum %i.\n",
-                    dictionary, MAX_WORDS);
-            return false;
-        }
-
-        // No need for strncpy(), as fscanf() already limited length
-        // and, per man, using it could hurt performance as it would write
-        // up to LENGHT x '\0' on every word.
-        strcpy(nodes[num_words].word, word);
-
         // Calculate hash of word to be used as index in hash table
-        unsigned int index = hash(word);
+        unsigned int index = hash(nodes[num_words].word);
 
         // Store node, as head of its bucket
         nodes[num_words].next = table[index];
@@ -137,6 +124,15 @@ bool load(const char *dictionary)
         // Update word counter
         num_words++;
     }
+
+    // Check if exceeded node array capacity
+    if (num_words > MAX_WORDS)
+    {
+        fprintf(stderr, "Too many words in dictionary '%s', maximum %i.\n",
+                dictionary, MAX_WORDS);
+        return false;
+    }
+
     // Check if error when reading file data
     if (ferror(file))
     {
