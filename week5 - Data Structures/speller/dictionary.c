@@ -77,10 +77,10 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // "Concatenate" the first 6 letters. Yes, there will be collisions, so what?
+    // "Concatenate" the first letters. Yes, there will be collisions, so what?
     // No strlen() needed, use only fast bit-shift arithmetics
     int h = 0;
-    for (int i = 0; i < 6 && word[i]; i++)
+    for (int i = 0; i < 8 && word[i]; i++)
     {
         h += word[i] << (8 * i);
     }
