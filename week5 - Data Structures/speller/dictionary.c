@@ -34,7 +34,7 @@ unsigned int num_words = 0;
 bool check(const char *word)
 {
     // Hash word to find hash table index (bucket)
-    unsigned int index = hash(word) % N;
+    unsigned int index = hash(word);
 
     // Traverse the list
     node *cursor = table[index];
@@ -68,7 +68,7 @@ unsigned int hash(const char *word)
     {
         h += word[i] * (i + 1);
     }
-    return h;
+    return h % N;
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -108,7 +108,7 @@ bool load(const char *dictionary)
         strcpy(n->word, word);
 
         // Calculate hash of word to be used as index in hash table
-        unsigned int index = hash(word) % N;
+        unsigned int index = hash(word);
 
         // Store node, as head of its bucket
         n->next = table[index];
