@@ -26,7 +26,7 @@ const unsigned int N = 2 * 143091;
 node *table[N];
 
 // Node array, to speedup unload()
-node *nodes[MAX_WORDS];
+node nodes[MAX_WORDS];
 
 // Word counter, set by load() and read by size()
 unsigned int num_words = 0;
@@ -35,7 +35,6 @@ unsigned int num_words = 0;
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-
     // Set word to a lowercase version of it
     // Original string will not be changed (and it can't because of 'const')
     char lower[LENGTH + 1];
@@ -113,33 +112,27 @@ bool load(const char *dictionary)
     char word[LENGTH + 1];
     while (fscanf(file, format, word) != EOF)
     {
-        // Create a new node for word
-        node *n = malloc(sizeof(node));
-        if (!n)
-        {
-            fprintf(stderr, "Error reading word '%s': %s\n", word, strerror(errno));
-            return false;
-        }
-        // No need for strncpy(), as fscanf() already limited length
-        // and, per man, using it could hurt performance as it would write
-        // up to LENGHT x '\0' on every word.
-        strcpy(n->word, word);
-
-        // Calculate hash of word to be used as index in hash table
-        unsigned int index = hash(word);
-
-        // Store node, as head of its bucket
-        n->next = table[index];
-        table[index] = n;
-
-        // Update word count and node array, optimizing size() and unload()
-        nodes[num_words++] = n;
-        if (num_words > MAX_WORDS)
+        if (num_words == MAX_WORDS)
         {
             fprintf(stderr, "Too many words in dictionary '%s', maximum %i.\n",
                     dictionary, MAX_WORDS);
             return false;
         }
+
+        // No need for strncpy(), as fscanf() already limited length
+        // and, per man, using it could hurt performance as it would write
+        // up to LENGHT x '\0' on every word.
+        strcpy(nodes[num_words].word, word);
+
+        // Calculate hash of word to be used as index in hash table
+        unsigned int index = hash(word);
+
+        // Store node, as head of its bucket
+        nodes[num_words].next = table[index];
+        table[index] = &nodes[num_words];
+
+        // Update word counter
+        num_words++;
     }
     // Check if error when reading file data
     if (ferror(file))
@@ -162,10 +155,5 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // Loop the node array, freeing each node
-    while (num_words--)
-    {
-        free(nodes[num_words]);
-    }
     return true;
 }
