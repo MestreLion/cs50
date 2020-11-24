@@ -1,11 +1,11 @@
 // Implements a dictionary's functionality
 
-#include <errno.h>
-#include <stdbool.h>
-#include <stdio.h>    // *printf, fscanf, fopen, fclose, FILE, EOF, stderr
-#include <stdlib.h>   // malloc, free
-#include <string.h>   // strerror, strcpy
-#include <strings.h>  // strncasecmp
+#include <ctype.h>    // tolower()
+#include <errno.h>    // errno
+#include <stdbool.h>  // bool, true, false
+#include <stdio.h>    // *printf(), fscanf(), fopen(), fclose(), FILE, EOF, stderr
+#include <stdlib.h>   // malloc(), free()
+#include <string.h>   // strerror(), strcpy()
 
 #include "dictionary.h"
 
@@ -33,6 +33,17 @@ unsigned int num_words = 0;
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
+
+    // Set word to a lowercase version of it
+    // Original string will not be changed (and it can't because of 'const')
+    char lower[LENGTH + 1];
+    strcpy(lower, word);
+    for (char *l = lower; *l; l++)
+    {
+        *l = tolower(*l);
+    }
+    word = lower;
+
     // Hash word to find hash table index (bucket)
     unsigned int index = hash(word);
 
@@ -41,7 +52,7 @@ bool check(const char *word)
     while (cursor != NULL)
     {
         // Compare words
-        int cmp = strncasecmp(word, cursor->word, LENGTH);
+        int cmp = strncmp(word, cursor->word, LENGTH);
 
         // Check if found
         if (cmp == 0)
