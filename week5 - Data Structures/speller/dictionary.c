@@ -45,11 +45,8 @@ bool check(const char *word)
     }
     word = lower;
 
-    // Hash word to find hash table index (bucket)
-    unsigned int index = hash(word);
-
-    // Traverse the list
-    node *cursor = table[index];
+    // Traverse the list at the bucket determined by hash()
+    node *cursor = table[hash(word)];
     while (cursor != NULL)
     {
         // Compare words
