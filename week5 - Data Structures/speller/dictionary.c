@@ -18,10 +18,9 @@ typedef struct node
 node;
 
 // Number of buckets in hash table
-// To avoid mod, set N as large as maximum hash() value, or a close upper bound
-// The higher it is, the slower is unload() (but perhaps neglectably).
-// NOTE: ~143K is enough for no collision, given an uniform hash()
-const unsigned int N = 1 + 127 * (LENGTH * LENGTH - LENGTH) / 2 * 31;
+// Ideally, N = key set size, no collisions given an uniform hash()
+// NOTE: ~143K for dictionaries/large
+const unsigned int N = 143091;
 
 // Hash table
 node *table[N];
@@ -70,14 +69,13 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // Sum all chars weighted by position and a (prime) constant
-    // Upper bound: 127 * (LENGTH^2 - LENGTH) / 2 * 31 = 3897630
     int h = 0;
     int len = strlen(word);
     for (int i = 0; i < len; i++)
     {
         h += word[i] * (i + 1) * 31;
     }
-    return h;
+    return h % N;
 }
 
 // Loads dictionary into memory, returning true if successful else false
