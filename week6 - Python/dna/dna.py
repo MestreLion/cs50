@@ -27,6 +27,13 @@ def parse_args(argv=None):
                         action="store_const",
                         help="Verbose mode, output extra info.")
 
+    parser.add_argument('-a', '--alternative',
+                        dest='find_match',
+                        const=find_match_hard,
+                        default=find_match_easy,
+                        action="store_const",
+                        help="Use alternative find_match() function.")
+
     parser.add_argument(dest='db',  metavar="DATABASE",
                         help="DNA database CSV file.")
 
@@ -34,6 +41,25 @@ def parse_args(argv=None):
                         help="DNA sequence TXT file.")
 
     return parser.parse_args(argv)
+
+
+def find_match_easy(database, sequence):
+    for person, genes in database.items():
+        log.debug("Profiling %s:", person)
+        for gene, repetitions in genes.items():
+            if (
+                (gene * (int(repetitions)) not in sequence) or
+                (gene * (int(repetitions) + 1) in sequence)
+            ):
+                log.debug("- Failed for %02s x %r", repetitions, gene)
+                break
+            log.debug("- Found %02s x %r", repetitions, gene)
+        else:
+            return person
+
+
+def find_match_hard(database, sequence):
+    pass
 
 
 def main(argv=None):
@@ -58,19 +84,7 @@ def main(argv=None):
 
     # Find the bad guy!
     log.info("Looking for a match...")
-    for person, genes in database.items():
-        for gene, repetitions in genes.items():
-            if (
-                (gene * (int(repetitions)) not in sequence) or
-                (gene * (int(repetitions) + 1) in sequence)
-            ):
-                break
-            log.debug("%02s x %r matching %s", repetitions, gene, person)
-        else:
-            print(person)
-            return
-
-    print("No match")
+    print(args.find_match(database, sequence) or "No match")
 
 
 if __name__ == "__main__":
