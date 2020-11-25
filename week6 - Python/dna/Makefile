@@ -21,7 +21,10 @@ databases/:
 	rm $(target).zip
 
 run: databases/
-	python3 $(target).py $(args)
+	python3 $(target).py $(debug:1=-v) $(args)
+
+debug:
+	$(MAKE) run debug=1
 
 purge:
 	rm -rf */
@@ -43,4 +46,4 @@ cs50: verify submit
 
 all: default cs50
 
-.PHONY: default run check style submit verify cs50 all
+.PHONY: default run debug purge check style submit verify cs50 all
