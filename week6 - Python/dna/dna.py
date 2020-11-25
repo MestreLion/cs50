@@ -60,7 +60,10 @@ def main(argv=None):
     log.info("Looking for a match...")
     for person, genes in database.items():
         for gene, repetitions in genes.items():
-            if gene * int(repetitions) not in sequence:
+            if (
+                (gene * (int(repetitions)) not in sequence) or
+                (gene * (int(repetitions) + 1) in sequence)
+            ):
                 break
             log.debug("%02s x %r matching %s", repetitions, gene, person)
         else:
