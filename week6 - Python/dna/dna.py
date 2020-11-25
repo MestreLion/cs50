@@ -10,7 +10,7 @@ import sys
 
 
 COPYRIGHT = """
-Copyright (C) 2018 Rodrigo Silva (MestreLion) <linux@rodrigosilva.com>
+Copyright (C) 2020 Rodrigo Silva (MestreLion) <linux@rodrigosilva.com>
 License: GPLv3 or later, at your choice. See <http://www.gnu.org/licenses/gpl>
 """
 
@@ -55,6 +55,19 @@ def main(argv=None):
     with open(args.seq) as file:
         sequence = file.read()
     log.debug(sequence)
+
+    # Find the bad guy!
+    log.info("Looking for a match...")
+    for person, genes in database.items():
+        for gene, repetitions in genes.items():
+            if gene * int(repetitions) not in sequence:
+                break
+            log.debug("%02s x %r matching %s", repetitions, gene, person)
+        else:
+            print(person)
+            return
+
+    print("No match")
 
 
 if __name__ == "__main__":
