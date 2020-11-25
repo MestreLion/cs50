@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Add Harvard's CS50 apt repo and install CS50 C library <libcs50.h> and tools
+# Install Harvard's CS50 repos, C and Python libraries and CLI tools
 
 # https://github.com/cs50/libcs50
 # https://packagecloud.io/install/repositories/cs50/repo/script.deb.sh
@@ -105,7 +105,7 @@ detect_os () {
 	fi
 }
 
-message "Add Harvard's CS50 apt repo and install CS50 C library and CLI tools"
+message "Install Harvard's CS50 repositories, C and Python libraries and CLI tools"
 
 if ! package_installed libcs50; then
 	detect_os
@@ -135,13 +135,13 @@ if ((update)); then
 	sudo apt update
 fi
 
-message "Installing CS50 C library and CLI dependencies and tools"
+message "Installing CS50 C library, CLI dependencies and tools"
 apt_install libcs50 astyle valgrind
 
-message "Installing CS50 CLI tools"
-pip_install {check,style,submit}50
+message "Installing CS50 Python library and main CLI tools"
+pip_install {cs,check,style,submit}50
 
 message "Configuring SSH so check50 and submit50 do not ask for Github password"
-ssh -T -p443 git@ssh.github.com
+ssh -T -p443 git@ssh.github.com || :
 
 message "Done!"
