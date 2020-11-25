@@ -48,8 +48,8 @@ def find_match_easy(database, sequence):
         log.debug("Profiling %s:", person)
         for gene, repetitions in genes.items():
             if (
-                (gene * (int(repetitions)) not in sequence) or
-                (gene * (int(repetitions) + 1) in sequence)
+                (gene * (repetitions) not in sequence) or
+                (gene * (repetitions + 1) in sequence)
             ):
                 log.debug("- Failed for %02s x %r", repetitions, gene)
                 break
@@ -71,10 +71,11 @@ def main(argv=None):
     # Load Database CSV to database dictionary, with names as keys
     log.info("Load database file: %s", args.db)
     with open(args.db) as file:
-        database = {row['name']: {k: row[k] for k in row if k != 'name'}
-                    for row in csv.DictReader(file)}
-        for person in database.items():
-            log.debug(person)
+        database = {}
+        for row in csv.DictReader(file):
+            person = row['name']
+            database[person] = {k: int(v) for k, v in row.items() if k != 'name'}
+            log.debug("%-9s: %s", person, database[person])
 
     # Load sequence TXT
     log.info("Load sequence file: %s", args.seq)
