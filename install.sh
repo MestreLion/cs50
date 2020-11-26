@@ -136,7 +136,7 @@ if ((update)); then
 fi
 
 message "Installing CS50 C library, CLI dependencies and tools"
-apt_install libcs50 astyle valgrind
+apt_install libcs50 astyle valgrind sqlite3
 
 message "Installing CS50 Python library and main CLI tools"
 pip_install {cs,check,style,submit}50
