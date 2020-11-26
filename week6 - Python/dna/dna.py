@@ -29,8 +29,8 @@ def parse_args(argv=None):
 
     parser.add_argument('-a', '--alternative',
                         dest='find_match',
-                        const=find_match_hard,
-                        default=find_match_easy,
+                        const=find_match_easy,
+                        default=find_match_hard,
                         action="store_const",
                         help="Use alternative find_match() function.")
 
@@ -59,7 +59,44 @@ def find_match_easy(database, sequence):
 
 
 def find_match_hard(database, sequence):
-    pass
+    if not database:
+        return
+
+    genes = tuple(tuple(database.items())[0][1].keys())
+    log.debug("Genes    : %s", genes)
+
+    srts = {gene: find_max_srt(gene, sequence) for gene in genes}
+    log.info(" SRTs     : %s",  srts)
+
+    for person, profile in database.items():
+        log.debug("%-9s: %s", person, profile)
+        if profile == srts:
+            return person
+
+
+def find_max_srt(gene, sequence):
+    """Find the longest gene streak in sequence"""
+    max_r = r = i = 0
+    length = len(gene)
+
+    while True:
+        # Find the gene
+        i = sequence.find(gene, i)
+        if i < 0:
+            return max_r
+
+        # See how long this streak is
+        r = 0
+        while True:
+            i += length
+            r += 1
+            if sequence[i:i + length] != gene:
+                break
+
+        # Update the longest streak, if needed
+        max_r = max(max_r, r)
+
+    return max_r
 
 
 def main(argv=None):
