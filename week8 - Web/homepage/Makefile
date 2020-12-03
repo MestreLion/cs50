@@ -23,21 +23,13 @@ index.html:
 run: index.html
 	python3 -m http.server $(args)
 
-purge:
-	rm -rf */
-
-style:
-	style50 *.html
-
 submit:
 	if [ -n '$(shell git status --porcelain)' ]; then git commit -a; fi
 	git push
 	echo yes | submit50 $(slug)
 
-verify: style
-
-cs50: verify submit
+cs50: submit
 
 all: default cs50
 
-.PHONY: default run purge style submit verify cs50 all
+.PHONY: default run submit verify cs50 all
