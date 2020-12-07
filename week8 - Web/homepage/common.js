@@ -1,15 +1,13 @@
 // Custom scripts. Requires jQuery (not included in this file)
 
-var BASE_YEAR = 2019;
-
-function year_range()
+function year_range(base_year)
 {
 	var year = (new Date()).getFullYear();
-	if (year <= BASE_YEAR)
+	if (year <= base_year)
 		return year;
-	return BASE_YEAR + '-' + year;
+	return base_year + '-' + year;
 }
 
 $(document).ready(function() {
-	$("#copyright_year").text(year_range());
+	$("#copyright_year").text(year_range($("#copyright_year").text()));
 });
