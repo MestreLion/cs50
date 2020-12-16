@@ -1,3 +1,23 @@
+/* Avatar image */
+.avatar {
+	width: 200px;
+	height: 200px;
+	background-size: 100% 100%;
+}
+
+.avatar-rodrigo {
+	background-image: url("images/rodrigo.jpeg");
+}
+
+.avatar-cecil {
+	background-image: url("images/cecil-quadrado.png");
+}
+
+.gif {
+	width: 24px;
+	height: 24px;
+}
+
 /* Bootstrap Icons
  * https://icons.getbootstrap.com/
  * Converted to inline CSS using https://yoksel.github.io/url-encoder/
@@ -56,15 +76,4 @@
 	width: 1rem;
 	height: 1rem;
 	background-image: url("data:image/svg+xml,%3Csvg width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-envelope' fill='currentColor' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z'/%3E%3C/svg%3E");
-}
-
-/* Bootstrap */
-.bi-bootstrap::before {
-	display: inline-block;
-	content: "";
-	background-repeat: no-repeat;
-	background-size: 1rem 1rem;
-	width: 1rem;
-	height: 1rem;
-	background-image: url("data:image/svg+xml,%3Csvg width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-bootstrap' fill='currentColor' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M12 1H4a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3zM4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4z'/%3E%3Cpath fill-rule='evenodd' d='M8.537 12H5.062V3.545h3.399c1.587 0 2.543.809 2.543 2.11 0 .884-.65 1.675-1.483 1.816v.1c1.143.117 1.904.931 1.904 2.033 0 1.488-1.084 2.396-2.888 2.396zM6.375 4.658v2.467h1.558c1.16 0 1.764-.428 1.764-1.23 0-.78-.569-1.237-1.541-1.237H6.375zm1.898 6.229H6.375V8.162h1.822c1.236 0 1.887.463 1.887 1.348 0 .896-.627 1.377-1.811 1.377z'/%3E%3C/svg%3E%0A");
 }

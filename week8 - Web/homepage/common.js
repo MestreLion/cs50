@@ -10,4 +10,7 @@ function year_range(base_year)
 
 $(document).ready(function() {
 	$("#copyright_year").text(year_range($("#copyright_year").text()));
+	$(".avatar").hover(function(){
+		$(this).toggleClass("avatar-rodrigo avatar-cecil");
+	});
 });
